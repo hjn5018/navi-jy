@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to_do_list.md",
+                "file": "docs/packaging_guide.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "to_do_list"
+              "title": "packaging_guide"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "23913da5ae39d7ca",
@@ -185,17 +186,35 @@
   },
   "active": "0c989ead9edaff4a",
   "lastOpenFiles": [
+    "backend/venv/Lib/site-packages/numpy/strings/__pycache__/__init__.cpython-313.pyc",
+    "backend/venv/Lib/site-packages/numpy/strings/__pycache__",
+    "backend/venv/Lib/site-packages/numpy/strings/__init__.pyi",
+    "backend/venv/Lib/site-packages/numpy/strings/__init__.py",
+    "backend/venv/Lib/site-packages/numpy/strings",
+    "backend/venv/Lib/site-packages/numpy/rec/__pycache__/__init__.cpython-313.pyc",
+    "backend/venv/Lib/site-packages/numpy/rec/__pycache__",
+    "backend/venv/Lib/site-packages/numpy/rec/__init__.pyi",
+    "backend/venv/Lib/site-packages/numpy/rec/__init__.py",
+    "backend/venv/Lib/site-packages/numpy/rec",
+    "backend/venv/Lib/site-packages/langchain_classic/tools/openapi/utils/__pycache__/__init__.cpython-313.pyc",
+    "backend/venv/Lib/site-packages/numpy/random/LICENSE.md",
+    "client/out/window.svg",
+    "client/out/file.svg",
+    "client/out/vercel.svg",
+    "client/out/next.svg",
+    "client/out/globe.svg",
+    "docs/future_roadmap.md",
+    "docs/packaging_guide.md",
+    "docs/setup_guide.md",
+    "docs/to_do_list.md",
+    "docs/qa_test_plan.md",
+    "docs/NAVI_PRD.md",
+    "docs/index.md",
+    "docs/development_log.md",
+    "docs/architecture.md",
+    "to_do_list.md",
+    "setup_guide.md",
     "development_log.md",
-    "backend/poc/youtube_search.py",
-    "backend/poc",
-    "client/node_modules/next/dist/esm/build/webpack/loaders/css-loader/src/plugins/postcss-url-parser.js.map",
-    "client/node_modules/next/dist/esm/build/webpack/loaders/css-loader/src/plugins/postcss-url-parser.js",
-    "client/node_modules/next/dist/esm/build/webpack/loaders/css-loader/src/plugins/postcss-import-parser.js.map",
-    "client/node_modules/next/dist/esm/build/webpack/loaders/css-loader/src/plugins/postcss-import-parser.js",
-    "client/node_modules/next/dist/esm/build/webpack/loaders/css-loader/src/plugins/postcss-icss-parser.js.map",
-    "client/node_modules/next/dist/esm/build/webpack/loaders/css-loader/src/plugins/postcss-icss-parser.js",
-    "client/node_modules/next/dist/esm/build/webpack/loaders/css-loader/src/plugins/index.js.map",
-    "client/node_modules/next/dist/esm/build/webpack/loaders/css-loader/src/plugins/index.js",
     "client/node_modules/next/dist/compiled/@babel/runtime/README.md",
     "client/node_modules/next/dist/compiled/regenerator-runtime/README.md",
     "client/node_modules/next/dist/compiled/react-refresh/README.md",
@@ -208,28 +227,10 @@
     "client/node_modules/@typescript-eslint/typescript-estree/node_modules/balanced-match/README.md",
     "client/node_modules/@typescript-eslint/typescript-estree/node_modules/balanced-match/LICENSE.md",
     "client/node_modules/@typescript-eslint/eslint-plugin/node_modules/ignore/README.md",
-    "client/node_modules/@eslint-community/eslint-utils/node_modules/eslint-visitor-keys/README.md",
-    "client/node_modules/tsconfig-paths/node_modules/json5/README.md",
-    "client/node_modules/tsconfig-paths/node_modules/json5/LICENSE.md",
-    "client/node_modules/tinyglobby/node_modules/picomatch/README.md",
-    "client/node_modules/tinyglobby/node_modules/fdir/README.md",
-    "client/node_modules/sharp/node_modules/semver/README.md",
-    "client/node_modules/next/node_modules/postcss/README.md",
-    "client/node_modules/is-bun-module/node_modules/semver/README.md",
-    "client/node_modules/fast-glob/node_modules/glob-parent/README.md",
-    "client/node_modules/fast-glob/node_modules/glob-parent/CHANGELOG.md",
-    "client/node_modules/eslint-plugin-react/node_modules/resolve/SECURITY.md",
-    "client/node_modules/eslint-plugin-jsx-a11y/docs/rules/tabindex-no-positive.md",
-    "client/node_modules/eslint-plugin-jsx-a11y/docs/rules/scope.md",
     "client/public/window.svg",
     "client/public/vercel.svg",
     "client/public/next.svg",
     "client/public/globe.svg",
-    "client/public/file.svg",
-    "backend/venv/Lib/site-packages/playwright/driver/package/lib/vite/traceViewer/playwright-logo.svg",
-    "backend/venv/Lib/site-packages/playwright/driver/package/lib/vite/recorder/playwright-logo.svg",
-    "backend/venv/Lib/site-packages/playwright/driver/package/lib/server/chromium/appIcon.png",
-    "backend/venv/Lib/site-packages/win32comext/axscript/Demos/client/ie/pycom_blowing.gif",
-    "backend/venv/Lib/site-packages/win32com/HTML/image/www_icon.gif"
+    "client/public/file.svg"
   ]
 }

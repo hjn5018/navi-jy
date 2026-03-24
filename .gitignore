@@ -3,27 +3,26 @@
 # Node.js (Client)
 node_modules/
 .next/
-out/
-build/
+client/out/
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 # Python (Backend)
-venv/
-.venv/
-env/
-__pycache__/
+**/venv/
+**/__pycache__/
 *.py[cod]
-*$py.class
 .pytest_cache/
-.coverage
+backend/dist/
+backend/build/
+
+# Packaging (Root)
+dist/
+build/
+*.spec
+launcher.exe
+NAVI_App.exe
+
+# Sensitive
 .env
 .env.*
 !.env.example
@@ -33,10 +32,7 @@ __pycache__/
 Thumbs.db
 .vscode/
 .idea/
+.obsidian/
 *.swp
 *.bak
 *.tmp
-
-# Obsidian (optional, keeping core settings but ignoring workspace state if preferred)
-.obsidian/workspace.json
-.obsidian/workspace-mobile.json
