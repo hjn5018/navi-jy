@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voice Navigator - Final Unified UI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f4f8;
+  --bg2:#e8eef5;
+  --panel:#ffffff;
+  --panel2:#f5f8fc;
+  --panel3:#eaf0f7;
+  --border:rgba(30,90,180,.14);
+  --border-strong:rgba(30,90,180,.28);
+  --text:#0f1f35;
+  --muted:#3a5270;
+  --dim:#6b87a8;
+  --accent:#1565c0;
+  --accent-2:#0097a7;
+  --accent-soft:rgba(21,101,192,.10);
+  --success:#1b7d3e;
+  --success-soft:rgba(27,125,62,.11);
+  --warn:#b45c00;
+  --warn-soft:rgba(180,92,0,.10);
+  --danger:#c0392b;
+  --danger-soft:rgba(192,57,43,.10);
+  --purple:#5e35b1;
+  --purple-soft:rgba(94,53,177,.10);
+  --shadow:0 12px 40px rgba(15,31,53,.13);
+  --font:'Noto Sans KR',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+
+/* ── 다크 테마 ── */
+html.theme-dark{
+  --bg:#07111c;
+  --bg2:#0b1626;
+  --panel:#101a2b;
+  --panel2:#132038;
+  --panel3:#172744;
+  --border:rgba(144,186,255,.14);
+  --border-strong:rgba(144,186,255,.28);
+  --text:#edf4ff;
+  --muted:#93a4bf;
+  --dim:#5f7393;
+  --accent:#57b8ff;
+  --accent-2:#27e1ff;
+  --accent-soft:rgba(87,184,255,.12);
+  --success:#41dd8b;
+  --success-soft:rgba(65,221,139,.12);
+  --warn:#ffbe55;
+  --warn-soft:rgba(255,190,85,.12);
+  --danger:#ff6b6b;
+  --danger-soft:rgba(255,107,107,.12);
+  --purple:#b48cff;
+  --purple-soft:rgba(180,140,255,.12);
+  --shadow:0 22px 60px rgba(0,0,0,.42);
+}
+html.theme-dark body{
+  background:
+    radial-gradient(circle at top right, rgba(39,225,255,.09), transparent 24%),
+    radial-gradient(circle at bottom left, rgba(180,140,255,.08), transparent 22%),
+    linear-gradient(180deg, #060d17 0%, #08121f 100%);
+}
+html.theme-dark #app{background:rgba(6,12,21,.92);}
+html.theme-dark #titlebar{background:linear-gradient(180deg,#07111d,#08101b);}
+html.theme-dark #statusbar{background:linear-gradient(180deg,rgba(14,21,33,.76),rgba(12,18,28,.62));}
+html.theme-dark .sb-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));box-shadow:none;}
+html.theme-dark .cmd-btn{background:linear-gradient(180deg,#16243b,#122035);}
+html.theme-dark .cmd-btn:hover{background:linear-gradient(180deg,#19304d,#142640);}
+html.theme-dark .cmd-btn.active{background:linear-gradient(180deg,rgba(65,221,139,.12),rgba(65,221,139,.06));}
+html.theme-dark #sidebar{background:linear-gradient(180deg,rgba(12,20,33,.96),rgba(10,17,29,.96));}
+html.theme-dark #center{background:linear-gradient(180deg,rgba(9,15,26,.9),rgba(10,16,28,.82));}
+html.theme-dark .inputbar{background:rgba(12,20,33,.96);}
+html.theme-dark #text-input{background:var(--panel2);}
+html.theme-dark .info-card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));box-shadow:none;}
+html.theme-dark #footer{background:#060c15;}
+html.theme-dark .fc{background:rgba(255,255,255,.02);}
+html.theme-dark .modal{background:var(--panel);}
+html.theme-dark .modal-head,.theme-dark .modal-foot{background:#0b1422;}
+html.theme-dark .settings-tabs{background:#0b1422;}
+html.theme-dark .tab-btn:hover{background:rgba(255,255,255,.04);}
+html.theme-dark .tab-btn.active{background:var(--accent-soft);color:var(--accent);}
+html.theme-dark .f-sel,.theme-dark .f-txt{background:var(--panel2);}
+html.theme-dark .f-tog{background:var(--panel3);}
+html.theme-dark .f-tog.on{background:var(--accent);}
+html.theme-dark .f-tog.on-g{background:var(--success);}
+html.theme-dark .f-tog.on-a{background:var(--warn);}
+html.theme-dark .f-tag{background:var(--panel3);}
+html.theme-dark .f-tag.on{background:var(--accent-soft);color:var(--accent);}
+html.theme-dark .toast{background:rgba(16,26,42,.96);}
+html.theme-dark .sample-item{background:var(--panel2);}
+html.theme-dark #recent-panel{background:var(--panel);}
+html.theme-dark .rp-item{background:var(--panel2);}
+html.theme-dark .mode-pill{background:var(--panel);}
+html.theme-dark .mode-pill.active{background:var(--accent-soft);}
+html.theme-dark .mini-btn{background:var(--panel2);}
+html.theme-dark .close-btn{background:var(--panel2);}
+html.theme-dark .secondary-btn{background:var(--panel2);}
+html.theme-dark .dot-success{box-shadow:0 0 10px rgba(65,221,139,.75);}
+html.theme-dark .dot-accent{box-shadow:0 0 10px rgba(87,184,255,.75);}
+html.theme-dark .dot-warn{box-shadow:0 0 10px rgba(255,190,85,.72);}
+html.theme-dark .log-user{background:linear-gradient(180deg,rgba(87,184,255,.12),rgba(87,184,255,.06));border-color:rgba(87,184,255,.22);}
+html.theme-dark .log-system{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));border-color:var(--border);}
+html.theme-dark .log-info{background:linear-gradient(180deg,rgba(255,190,85,.10),rgba(255,190,85,.05));border-color:rgba(255,190,85,.18);}
+html.theme-dark .tb-icon{background:linear-gradient(135deg,var(--accent),#2563eb);}
+
+/* ── 고대비 테마 ── */
+html.theme-contrast{
+  --bg:#ffffff;
+  --bg2:#f0f0f0;
+  --panel:#ffffff;
+  --panel2:#f0f0f0;
+  --panel3:#e0e0e0;
+  --border:rgba(0,0,0,.5);
+  --border-strong:rgba(0,0,0,.75);
+  --text:#000000;
+  --muted:#111111;
+  --dim:#333333;
+  --accent:#0000cc;
+  --accent-soft:rgba(0,0,204,.12);
+  --success:#005500;
+  --success-soft:rgba(0,85,0,.12);
+  --warn:#7a3800;
+  --warn-soft:rgba(122,56,0,.12);
+  --danger:#aa0000;
+  --danger-soft:rgba(170,0,0,.12);
+  --shadow:0 4px 16px rgba(0,0,0,.3);
+}
+html.theme-contrast body{background:#e0e0e0;}
+html.theme-contrast #app{background:#ffffff;border:2px solid #000;}
+html.theme-contrast #titlebar{background:#000033;border-bottom:2px solid #000;}
+html.theme-contrast .sb-card{border:2px solid #000;box-shadow:none;background:#fff;}
+html.theme-contrast .cmd-btn{background:#fff;border:2px solid #000;}
+html.theme-contrast .cmd-btn:hover{background:#e8e8ff;border-color:#0000cc;}
+html.theme-contrast .cmd-btn.active{background:#e8ffe8;border-color:#005500;}
+html.theme-contrast .info-card{border:2px solid #000;background:#fff;box-shadow:none;}
+html.theme-contrast #footer{background:#e0e0e0;border-top:2px solid #000;}
+html.theme-contrast .fc{border:2px solid #000;background:#fff;}
+html.theme-contrast .modal{border:2px solid #000;}
+html.theme-contrast .modal-head,.theme-contrast .modal-foot{background:#e8e8e8;border-color:#000;}
+html.theme-contrast .settings-tabs{background:#e8e8e8;border-right:2px solid #000;}
+html.theme-contrast .tab-btn.active{background:#ccccff;color:#000099;border-left:3px solid #0000cc;}
+html.theme-contrast .f-sel,.theme-contrast .f-txt{border:2px solid #000;background:#fff;}
+html.theme-contrast .f-tog{background:#ccc;border:2px solid #000;}
+html.theme-contrast .f-tog.on{background:#0000cc;}
+html.theme-contrast .f-tog.on-g{background:#005500;}
+html.theme-contrast .f-tog.on-a{background:#7a3800;}
+html.theme-contrast .f-tag{border:2px solid #000;background:#fff;}
+html.theme-contrast .f-tag.on{background:#ccccff;color:#000099;border-color:#0000cc;}
+html.theme-contrast .toast{border:2px solid #000;background:#fff;color:#000;}
+html.theme-contrast .mode-badge{border-width:2px;}
+html.theme-contrast .mode-normal{color:#00008b;background:#e8e8ff;border-color:#0000cc;}
+html.theme-contrast .mode-secure{color:#6a0000;background:#ffe8e8;border-color:#aa0000;}
+html.theme-contrast .mode-pill{border:2px solid #000;}
+html.theme-contrast .mode-pill.active{border-color:#0000cc;background:#e8e8ff;}
+html.theme-contrast .dot-success{background:#005500;box-shadow:none;}
+html.theme-contrast .dot-accent{background:#0000cc;box-shadow:none;}
+html.theme-contrast .dot-warn{background:#7a3800;box-shadow:none;}
+html.theme-contrast .dot-danger{background:#aa0000;box-shadow:none;}
+html.theme-contrast #text-input{border:2px solid #000;}
+html.theme-contrast .send-btn{background:#0000cc;}
+html.theme-contrast .close-btn{border:2px solid #000;}
+html.theme-contrast .secondary-btn{border:2px solid #000;}
+html.theme-contrast .log-user{border:2px solid #0000cc;background:#e8eeff;}
+html.theme-contrast .log-system{border:2px solid #005500;background:#e8ffe8;}
+html.theme-contrast .log-info{border:2px solid #7a3800;background:#fff8e8;}
+
+/* ── 큰 글씨 (저시력자용) ── */
+/* 상태바 */
+html.font-large .sb-lbl{font-size:12px;letter-spacing:.08em;}
+html.font-large .sb-val{font-size:18px;font-weight:900;gap:10px;}
+html.font-large .sb-card{height:100px;gap:10px;padding:14px 14px;}
+html.font-large .dot{width:12px;height:12px;}
+html.font-large .mode-badge{font-size:15px;padding:7px 14px;}
+/* 사이드바 */
+html.font-large .btn-name{font-size:18px;font-weight:900;}
+html.font-large .btn-desc{font-size:13px;margin-top:4px;}
+html.font-large .btn-icon{width:46px;height:46px;font-size:22px;border-radius:14px;}
+html.font-large .cmd-btn{padding:16px 14px;border-radius:16px;gap:14px;}
+html.font-large .kbd{font-size:12px;padding:5px 10px;}
+html.font-large .side-heading{font-size:12px;}
+html.font-large .mode-pill{padding:14px 14px;}
+html.font-large .mode-icon{width:36px;height:36px;font-size:18px;}
+/* 로그 */
+html.font-large .log-text{font-size:17px;line-height:1.75;}
+html.font-large .log-meta{font-size:12px;letter-spacing:.06em;}
+html.font-large .log-time{font-size:12px;}
+html.font-large .log-bubble{padding:14px 16px;border-radius:18px;}
+html.font-large .title-wrap h2{font-size:24px;}
+html.font-large .title-wrap p{font-size:14px;}
+html.font-large .mini-btn{font-size:14px;padding:11px 16px;}
+/* 입력창 */
+html.font-large #text-input{font-size:17px;padding:14px 16px;}
+html.font-large .send-btn{height:50px;font-size:22px;}
+/* 푸터 */
+html.font-large .fc-lbl{font-size:11px;}
+html.font-large .fc-val{font-size:13px;}
+html.font-large .fc{padding:9px 12px;gap:10px;}
+/* 설정 모달 */
+html.font-large .tab-btn{font-size:15px;padding:12px 14px;}
+html.font-large .tp-h{font-size:19px;}
+html.font-large .fr-name{font-size:16px;font-weight:900;}
+html.font-large .fr-desc{font-size:13px;margin-top:5px;}
+html.font-large .fr{padding:14px 0;}
+html.font-large .f-sel,html.font-large .f-txt{font-size:14px;padding:12px 14px;}
+html.font-large .modal-title{font-size:17px;}
+html.font-large .f-tag{font-size:14px;padding:6px 16px;}
+html.font-large .f-badge{font-size:13px;}
+html.font-large .f-act{font-size:14px;padding:12px 18px;}
+html.font-large .info-title{font-size:16px;font-weight:900;}
+html.font-large .info-sub{font-size:13px;}
+html.font-large .info-row span{font-size:14px;}
+/* 타이틀바 */
+html.font-large .tb-title{font-size:15px;}
+html.font-large .tb-time{font-size:14px;}
+html.font-large .tb-link{font-size:14px;}
+/* ── 화면 설정 프리뷰 카드 ── */
+
+html,body{
+  width:100%;height:100%;
+  background:
+    radial-gradient(circle at top right, rgba(21,101,192,.07), transparent 28%),
+    radial-gradient(circle at bottom left, rgba(94,53,177,.06), transparent 26%),
+    linear-gradient(180deg, #dde8f4 0%, #e8eef5 100%);
+  color:var(--text);
+  font-family:var(--font);
+  overflow:hidden;
+}
+body{padding:14px}
+#app{
+  width:100%;
+  height:100%;
+  border:1px solid var(--border);
+  border-radius:24px;
+  overflow:hidden;
+  background:rgba(248,251,255,.97);
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(10px);
+  display:grid;
+  grid-template-rows: 54px 122px minmax(0,1fr) 42px;
+}
+
+/* title bar */
+#titlebar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;
+  background:linear-gradient(180deg,#1a5fa8,#1565c0);
+  border-bottom:1px solid rgba(21,101,192,.3);
+}
+.tb-title{font-size:13px;font-weight:900;letter-spacing:.04em;color:#ffffff}
+.tb-sub{font-size:11px;color:rgba(255,255,255,.65);font-family:var(--mono)}
+.tb-left,.tb-right{display:flex;align-items:center;gap:12px}
+.wc{display:flex;gap:7px}
+.wc-btn{width:12px;height:12px;border-radius:50%;border:none;cursor:pointer;transition:.15s}
+.wc-btn:hover{transform:scale(1.08);filter:brightness(1.08)}
+.wc-close{background:#ff5f57}.wc-min{background:#febc2e}.wc-max{background:#28c840}
+.tb-brand{display:flex;align-items:center;gap:10px}
+.tb-icon{
+  width:28px;height:28px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#ffffff,rgba(255,255,255,.7));
+  box-shadow:0 0 0 4px rgba(255,255,255,.15), 0 0 18px rgba(255,255,255,.12);
+  font-size:15px
+}
+.tb-title-wrap{display:flex;flex-direction:column;line-height:1.05}
+.tb-title{font-size:13px;font-weight:900;letter-spacing:.04em}
+.tb-sub{font-size:11px;color:var(--dim);font-family:var(--mono)}
+.tb-link{
+  border:none;background:none;color:rgba(255,255,255,.85);
+  font-size:12px;font-weight:800;cursor:pointer;font-family:var(--font)
+}
+.tb-link:hover{text-decoration:underline;color:#fff}
+.tb-time{font-size:12px;color:rgba(255,255,255,.7);font-family:var(--mono)}
+
+/* status row fixed no overlap */
+#statusbar{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+  padding:18px 18px 18px 18px;
+  height:100%;
+  align-items:start;
+  box-sizing:border-box;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(245,249,255,.85));
+}
+.sb-card{
+  min-width:0;
+  min-height:0;
+  height:86px;
+  border:1px solid var(--border);
+  background:linear-gradient(180deg, #ffffff, #f5f8fc);
+  border-radius:16px;
+  padding:16px 12px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:8px;
+  box-shadow:0 2px 8px rgba(21,101,192,.07);
+}
+.sb-lbl{
+  font-size:10px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+.sb-val{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:14px;
+  font-weight:800;
+  min-width:0;
+  line-height:1.2;
+  flex-wrap:nowrap;
+}
+.text-ellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+.dot-gray{background:#7a8fa8}
+.dot-success{background:#1b7d3e;box-shadow:0 0 8px rgba(27,125,62,.55)}
+.dot-accent{background:#1565c0;box-shadow:0 0 8px rgba(21,101,192,.55)}
+.dot-warn{background:#b45c00;box-shadow:0 0 8px rgba(180,92,0,.55)}
+.dot-danger{background:#c0392b;box-shadow:0 0 8px rgba(192,57,43,.55)}
+.wave{display:flex;align-items:flex-end;gap:3px;height:18px}
+.bar{width:3px;height:4px;border-radius:2px;background:var(--success);opacity:.35}
+.wave.active .bar:nth-child(1){animation:b1 .9s ease-in-out infinite}
+.wave.active .bar:nth-child(2){animation:b2 .7s ease-in-out infinite .07s}
+.wave.active .bar:nth-child(3){animation:b3 .85s ease-in-out infinite .1s}
+.wave.active .bar:nth-child(4){animation:b4 .92s ease-in-out infinite .16s}
+.wave.active .bar:nth-child(5){animation:b2 .72s ease-in-out infinite .22s}
+.wave.active .bar:nth-child(6){animation:b3 .95s ease-in-out infinite .08s}
+.wave.active .bar:nth-child(7){animation:b1 .82s ease-in-out infinite .18s}
+@keyframes b1{0%,100%{height:4px}45%{height:14px}}
+@keyframes b2{0%,100%{height:6px}45%{height:18px}}
+@keyframes b3{0%,100%{height:8px}45%{height:16px}}
+@keyframes b4{0%,100%{height:5px}45%{height:20px}}
+.mode-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 10px;border-radius:999px;font-size:12px;font-weight:800
+}
+.mode-normal{color:#0d47a1;background:rgba(21,101,192,.12);border:1.5px solid rgba(21,101,192,.35)}
+.mode-screen{color:#4527a0;background:rgba(94,53,177,.12);border:1.5px solid rgba(94,53,177,.35)}
+.mode-secure{color:#e65100;background:rgba(180,92,0,.12);border:1.5px solid rgba(180,92,0,.35)}
+
+/* main */
+#main{
+  display:grid;
+  grid-template-columns:260px minmax(0,1fr);
+  min-height:0;
+  padding-top:22px;
+  box-sizing:border-box;
+}
+#sidebar{
+  border-right:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(240,246,255,.98), rgba(235,243,255,.96));
+  min-height:0;
+  overflow:auto;
+}
+#sidebar::-webkit-scrollbar,.right-scroll::-webkit-scrollbar,.log-wrap::-webkit-scrollbar{width:6px}
+#sidebar::-webkit-scrollbar-thumb,.right-scroll::-webkit-scrollbar-thumb,.log-wrap::-webkit-scrollbar-thumb{background:rgba(255,255,255,.09);border-radius:4px}
+.side-scroll{padding:14px;display:flex;flex-direction:column;gap:10px}
+.side-heading{
+  padding:2px 4px 4px;
+  font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)
+}
+.cmd-btn{
+  width:100%;
+  border:1.5px solid var(--border-strong);
+  background:linear-gradient(180deg,#ffffff,#f0f6ff);
+  color:var(--text);
+  border-radius:14px;
+  padding:14px 12px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;text-align:left;transition:.16s;
+  box-shadow:0 1px 4px rgba(21,101,192,.06);
+}
+.cmd-btn:hover{border-color:rgba(21,101,192,.45);background:linear-gradient(180deg,#e8f0fe,#ddeaff);box-shadow:0 0 0 2px rgba(21,101,192,.10)}
+.cmd-btn:active{transform:scale(.985)}
+.cmd-btn.active{
+  border-color:rgba(27,125,62,.45);
+  background:linear-gradient(180deg, rgba(27,125,62,.10), rgba(27,125,62,.05));
+}
+.btn-icon{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex:0 0 auto
+}
+.i-listen{background:var(--success-soft)}
+.i-screen{background:var(--purple-soft)}
+.i-recent{background:var(--warn-soft)}
+.i-settings{background:var(--accent-soft)}
+.btn-text{min-width:0;flex:1}
+.btn-name{font-size:15px;font-weight:900}
+.btn-desc{font-size:11px;color:var(--muted);margin-top:2px}
+.kbd{
+  font-family:var(--mono);
+  font-size:10px;font-weight:800;
+  border:1px solid var(--border-strong);
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+  border-radius:999px;
+  padding:4px 7px;
+  flex:0 0 auto
+}
+.mode-switches{display:grid;gap:8px}
+.mode-pill{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 12px;border-radius:12px;
+  border:1px solid var(--border);
+  background:var(--panel);
+  cursor:pointer;transition:.15s
+}
+.mode-pill:hover{border-color:rgba(87,184,255,.32);background:var(--panel2)}
+.mode-pill.active{border-color:rgba(87,184,255,.36);background:var(--accent-soft)}
+.mode-icon{
+  width:30px;height:30px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;font-size:14px
+}
+
+#center{
+  min-width:0;
+  display:grid;
+  grid-template-rows:64px minmax(0,1fr) 62px;
+  background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(248,252,255,.9));
+}
+.center-top{
+  padding:14px 16px 10px;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+.title-wrap h2{font-size:18px;font-weight:900}
+.title-wrap p{font-size:12px;color:var(--muted);margin-top:2px}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mini-btn{
+  border:1px solid var(--border-strong);
+  background:var(--panel2);
+  color:var(--muted);
+  border-radius:10px;
+  padding:9px 12px;
+  font-size:12px;font-weight:800;
+  cursor:pointer;transition:.15s;font-family:var(--font)
+}
+.mini-btn:hover{color:var(--text);border-color:rgba(87,184,255,.34);background:var(--accent-soft)}
+
+.log-wrap{
+  overflow:auto;
+  padding:14px 16px;
+  display:flex;flex-direction:column;gap:10px;
+  min-height:0;
+}
+.log-bubble{
+  max-width:min(86%, 760px);
+  border-radius:16px;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  animation:fadeIn .18s ease-out;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.log-user{align-self:flex-end;background:linear-gradient(180deg, rgba(21,101,192,.10), rgba(21,101,192,.05));border-color:rgba(21,101,192,.25)}
+.log-system{align-self:flex-start;background:linear-gradient(180deg, rgba(27,125,62,.08), rgba(27,125,62,.03));border-color:rgba(27,125,62,.18)}
+.log-info{align-self:flex-start;background:linear-gradient(180deg, rgba(180,92,0,.08), rgba(180,92,0,.04));border-color:rgba(180,92,0,.20)}
+.log-meta{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.log-user .log-meta{color:var(--accent)}
+.log-system .log-meta{color:var(--success)}
+.log-info .log-meta{color:var(--warn)}
+.log-text{font-size:14px;line-height:1.65}
+.log-time{font-size:10px;color:var(--dim);margin-top:6px;font-family:var(--mono)}
+
+.inputbar{
+  padding:10px 16px;
+  border-top:1px solid var(--border);
+  background:rgba(240,246,255,.98);
+  display:flex;gap:10px;align-items:center
+}
+#text-input{
+  flex:1;
+  border:1.5px solid var(--border-strong);
+  background:#ffffff;
+  color:var(--text);
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:14px;outline:none
+}
+#text-input:focus{border-color:rgba(21,101,192,.5);box-shadow:0 0 0 3px rgba(21,101,192,.12)}
+#text-input::placeholder{color:var(--dim)}
+.send-btn,.demo-btn{
+  height:42px;border-radius:12px;border:none;font-family:var(--font);cursor:pointer;font-weight:900
+}
+.send-btn{
+  width:46px;background:linear-gradient(180deg,#1a73e8,#1565c0);color:white;font-size:18px
+}
+.demo-btn{
+  padding:0 14px;border:1.5px solid rgba(180,92,0,.35);background:rgba(180,92,0,.09);color:#b45c00;font-size:12px
+}
+
+/* right side */
+#right-panel{
+  border-left:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(240,246,255,.98), rgba(235,243,255,.96));
+  min-height:0;
+}
+.right-scroll{padding:14px;overflow:auto;display:flex;flex-direction:column;gap:12px;height:100%}
+.info-card{
+  border:1px solid var(--border);
+  background:linear-gradient(180deg, #ffffff, #f5f8fc);
+  border-radius:16px;padding:14px;
+  box-shadow:0 1px 6px rgba(21,101,192,.06);
+}
+.info-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.info-title{font-size:13px;font-weight:900}
+.info-sub{font-size:11px;color:var(--muted)}
+.info-row{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:8px 0;border-bottom:1px solid rgba(21,101,192,.08)
+}
+.info-row:last-child{border-bottom:none;padding-bottom:0}
+.info-row span:first-child{font-size:12px;color:var(--muted)}
+.info-row span:last-child{font-size:12px;font-weight:800;text-align:right}
+.status-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800
+}
+.pill-green{background:rgba(27,125,62,.12);color:#1b7d3e}
+.pill-blue{background:rgba(21,101,192,.10);color:#1565c0}
+.sample-list{display:flex;flex-direction:column;gap:8px}
+.sample-item{
+  border:1px solid var(--border);
+  background:#ffffff;
+  border-radius:12px;padding:11px 12px;cursor:pointer;transition:.15s;
+  box-shadow:0 1px 3px rgba(21,101,192,.05);
+}
+.sample-item:hover{border-color:rgba(21,101,192,.4);background:rgba(21,101,192,.06)}
+.sample-title{font-size:12px;font-weight:900}
+.sample-desc{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+
+#footer{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  padding:8px 12px;
+  background:#dde8f4;
+  border-top:1px solid var(--border)
+}
+.fc{
+  min-width:0;
+  display:flex;align-items:center;gap:8px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.7);
+  border-radius:10px;
+  padding:7px 10px
+}
+.fc-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;font-weight:800;letter-spacing:.08em}
+.fc-val{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--mono)}
+.fc-ok{color:#1b7d3e} .fc-warn{color:#b45c00} .fc-info{color:#1565c0}
+
+#toast-wrap{
+  position:fixed;top:72px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:9999
+}
+.toast{
+  min-width:240px;max-width:320px;
+  padding:12px 14px;border-radius:12px;
+  border:1px solid var(--border-strong);
+  box-shadow:var(--shadow);
+  background:rgba(255,255,255,.97);
+  color:var(--text);font-size:13px;line-height:1.45;
+  animation:toastIn .18s ease-out
+}
+.toast.success{border-left:3px solid #1b7d3e}
+.toast.info{border-left:3px solid #1565c0}
+.toast.warn{border-left:3px solid #b45c00}
+@keyframes toastIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+
+.overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.72);backdrop-filter:blur(4px);
+  z-index:9000;align-items:center;justify-content:center;padding:20px
+}
+.overlay.open{display:flex}
+.modal{
+  width:min(760px,96vw);max-height:88vh;overflow:hidden;
+  background:#ffffff;border:1px solid var(--border-strong);
+  border-radius:20px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;animation:modalIn .2s ease-out
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:none}}
+.modal-head{
+  padding:14px 16px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  background:#e8f0fe
+}
+.modal-title{font-size:15px;font-weight:900}
+.close-btn{
+  width:34px;height:34px;border-radius:10px;border:1px solid var(--border-strong);
+  background:#ffffff;color:var(--muted);cursor:pointer;font-size:16px
+}
+.close-btn:hover{color:#c0392b;background:rgba(192,57,43,.09)}
+.modal-body{padding:16px;overflow:auto}
+.modal-foot{
+  padding:14px 16px;border-top:1px solid var(--border);
+  display:flex;justify-content:flex-end;gap:10px;background:#e8f0fe
+}
+.secondary-btn,.primary-btn{
+  border:none;border-radius:10px;padding:10px 16px;font-family:var(--font);font-size:13px;font-weight:900;cursor:pointer
+}
+.secondary-btn{background:#ffffff;border:1.5px solid var(--border-strong);color:var(--muted)}
+.secondary-btn:hover{color:var(--text)}
+.primary-btn{background:linear-gradient(180deg,#1a73e8,#1565c0);color:#fff}
+
+#shortcut-overlay .modal{max-width:520px}
+.sh-row{
+  display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(21,101,192,.08)
+}
+.sh-row:last-child{border-bottom:none}
+.sh-kbd{
+  font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:8px;border:1.5px solid var(--border-strong);background:#e8f0fe;color:#1565c0
+}
+
+#screen-overlay .modal{max-width:560px}
+.screen-box{text-align:center}
+.screen-hero{font-size:36px;margin-bottom:8px}
+.screen-progress{height:6px;background:#dde8f4;border-radius:999px;overflow:hidden;margin:18px 0 14px}
+.screen-bar{width:0;height:100%;background:linear-gradient(90deg,#1565c0,#0097a7);animation:fill 1.9s ease forwards}
+@keyframes fill{to{width:100%}}
+.screen-result{
+  display:none;margin-top:14px;padding:14px;border-radius:14px;border:1px solid rgba(21,101,192,.22);
+  background:rgba(21,101,192,.06);text-align:left;line-height:1.65
+}
+
+/* recent slide panel */
+#recent-overlay{align-items:flex-start;justify-content:flex-end}
+#recent-panel{
+  width:min(420px,96vw);height:100%;max-height:100%;
+  overflow:auto;background:#ffffff;
+  border-left:1px solid var(--border-strong);
+  display:flex;flex-direction:column;
+  animation:slideIn .22s ease-out
+}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:none}}
+.rp-hdr{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-bottom:1px solid var(--border)}
+.rp-title{font-size:15px;font-weight:900}
+.rp-x{
+  width:28px;height:28px;border-radius:8px;background:#f0f4f8;border:1.5px solid var(--border-strong);color:var(--muted);cursor:pointer
+}
+.rp-body{flex:1;overflow:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.rp-item{
+  border:1px solid var(--border);background:#f5f8fc;border-radius:12px;padding:12px;cursor:pointer
+}
+.rp-item:hover{border-color:rgba(21,101,192,.4);background:rgba(21,101,192,.07)}
+.rp-footer{padding:12px;border-top:1px solid var(--border)}
+.rp-clear{
+  width:100%;padding:10px;border-radius:10px;background:rgba(192,57,43,.09);border:1.5px solid rgba(192,57,43,.28);color:#c0392b;font-family:var(--font);font-size:13px;cursor:pointer;font-weight:800
+}
+.recent-time{font-size:10px;color:var(--dim);font-family:var(--mono);margin-top:4px}
+
+/* settings final unified tone */
+#settings-overlay .modal{width:min(900px,96vw)}
+.settings-layout{display:grid;grid-template-columns:180px 1fr;min-height:470px}
+.settings-tabs{
+  border-right:1px solid var(--border);padding:10px;display:flex;flex-direction:column;gap:6px;background:#e8f0fe
+}
+.tab-btn{
+  text-align:left;border:none;background:none;color:var(--muted);font-family:var(--font);cursor:pointer;
+  padding:10px 12px;border-radius:10px;font-size:13px;font-weight:800
+}
+.tab-btn:hover{background:rgba(21,101,192,.06);color:var(--text)}
+.tab-btn.active{background:rgba(21,101,192,.14);color:#1565c0}
+.tab-pane{display:none;padding:16px}
+.tab-pane.active{display:block}
+.tp-h{
+  font-size:16px;font-weight:900;color:var(--text);
+  padding-bottom:14px;margin-bottom:4px;border-bottom:1px solid var(--border)
+}
+.fr{
+  display:flex;justify-content:space-between;gap:14px;align-items:center;
+  padding:12px 0;border-bottom:1px solid rgba(21,101,192,.08)
+}
+.fr:last-child{border-bottom:none}
+.fr-l{flex:1}
+.fr-name{font-size:13px;font-weight:900}
+.fr-desc{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+.fr-r{flex:0 0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.f-sel,.f-txt{
+  min-width:180px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border-strong);
+  background:#ffffff;color:var(--text);font-family:var(--font);font-size:12px;outline:none
+}
+.f-sel:focus,.f-txt:focus{border-color:rgba(21,101,192,.5)}
+.f-tog{
+  width:42px;height:24px;border-radius:999px;background:#d0dae6;border:1.5px solid var(--border-strong);position:relative;cursor:pointer
+}
+.f-tog::after{
+  content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s
+}
+.f-tog.on,.f-tog.on-g,.f-tog.on-a{border-color:transparent}
+.f-tog.on{background:#1565c0}
+.f-tog.on-g{background:#1b7d3e}
+.f-tog.on-a{background:#b45c00}
+.f-tog.on::after,.f-tog.on-g::after,.f-tog.on-a::after{left:20px}
+.f-range{width:130px}
+.f-badge{
+  display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800
+}
+.fb-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.fb-ok{background:rgba(27,125,62,.12);color:#1b7d3e}
+.fb-warn{background:rgba(180,92,0,.11);color:#b45c00}
+.f-act{
+  border:none;border-radius:10px;padding:10px 14px;font-family:var(--font);font-size:12px;font-weight:800;cursor:pointer;
+  background:#ffffff;border:1.5px solid var(--border-strong);color:var(--muted)
+}
+.f-act:hover{color:var(--text)}
+.f-act.bad:hover{color:#c0392b;background:rgba(192,57,43,.09)}
+.f-tag{
+  padding:4px 13px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--border-strong);background:#f0f4f8;color:var(--muted)
+}
+.f-tag.on{background:rgba(21,101,192,.12);color:#1565c0;border-color:rgba(21,101,192,.4)}
+
+@media (max-width:860px){
+  body{padding:10px}
+  #app{grid-template-rows:46px auto minmax(0,1fr) 38px}
+  #statusbar{grid-template-columns:1fr 1fr}
+  #main{grid-template-columns:1fr}
+  #sidebar{display:none}
+  .settings-layout{grid-template-columns:1fr}
+  .settings-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-right:none;border-bottom:1px solid var(--border)}
+  #footer{grid-template-columns:1fr 1fr}
+  .center-top{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="titlebar">
+    <div class="tb-left">
+      <div class="wc">
+        <button class="wc-btn wc-close" onclick="showToast('창 닫기 (데모)', 'info')"></button>
+        <button class="wc-btn wc-min" onclick="showToast('최소화 (데모)', 'info')"></button>
+        <button class="wc-btn wc-max" onclick="showToast('최대화 (데모)', 'info')"></button>
+      </div>
+      <div class="tb-brand">
+        <div class="tb-icon">🎙</div>
+        <div class="tb-title-wrap">
+          <span class="tb-title">Voice Navigator</span>
+          <span class="tb-sub">Final Unified Windows App Concept</span>
+        </div>
+      </div>
+    </div>
+    <div class="tb-right">
+      <button class="tb-link" onclick="openShortcutOverlay()">단축키 보기</button>
+      <span class="tb-time" id="clock">--:--:--</span>
+    </div>
+  </div>
+
+  <div id="statusbar">
+    <div class="sb-card">
+      <span class="sb-lbl">마이크 상태</span>
+      <div class="sb-val">
+        <span class="dot dot-gray" id="mic-dot"></span>
+        <div class="wave" id="wave">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+        <span class="text-ellipsis" id="mic-status-text">대기</span>
+      </div>
+    </div>
+    <div class="sb-card">
+      <span class="sb-lbl">현재 모드</span>
+      <div class="sb-val"><span class="mode-badge mode-normal" id="mode-badge">일반 모드</span></div>
+    </div>
+    <div class="sb-card">
+      <span class="sb-lbl">활성 프로그램</span>
+      <div class="sb-val"><span class="dot dot-accent"></span><span class="text-ellipsis" id="active-app">Voice Navigator</span></div>
+    </div>
+    <div class="sb-card">
+      <span class="sb-lbl">자동화 라우터</span>
+      <div class="sb-val"><span class="dot dot-warn"></span><span class="text-ellipsis" id="route-status">Playwright 대기</span></div>
+    </div>
+  </div>
+
+  <div id="main">
+    <aside id="sidebar">
+      <div class="side-scroll">
+        <div class="side-heading">주요 기능</div>
+
+        <button class="cmd-btn" id="btn-listen" onclick="toggleListen()">
+          <div class="btn-icon i-listen">🎙</div>
+          <div class="btn-text">
+            <div class="btn-name">듣기 시작</div>
+            <div class="btn-desc">음성 인식 시작 / 중지</div>
+          </div>
+          <span class="kbd">F2</span>
+        </button>
+
+        <button class="cmd-btn" onclick="startScreenRead()">
+          <div class="btn-icon i-screen">👁</div>
+          <div class="btn-text">
+            <div class="btn-name">화면 읽기</div>
+            <div class="btn-desc">현재 화면 분석 및 낭독</div>
+          </div>
+          <span class="kbd">F3</span>
+        </button>
+
+        <button class="cmd-btn" id="btn-recent" onclick="openRecentPanel()">
+          <div class="btn-icon i-recent">📋</div>
+          <div class="btn-text">
+            <div class="btn-name">최근 명령 보기</div>
+            <div class="btn-desc">최근 명령과 결과 확인</div>
+          </div>
+          <span class="kbd">F4</span>
+        </button>
+
+        <button class="cmd-btn" id="btn-settings" onclick="openSettings()">
+          <div class="btn-icon i-settings">⚙</div>
+          <div class="btn-text">
+            <div class="btn-name">설정</div>
+            <div class="btn-desc">STT · TTS · LLM · 보안 · 로그</div>
+          </div>
+          <span class="kbd">F5</span>
+        </button>
+
+        <div class="side-heading" style="margin-top:8px">모드 전환</div>
+        <div class="mode-switches">
+          <div class="mode-pill active" id="mode-pill-normal" onclick="setMode('normal')">
+            <div class="mode-icon" style="background:rgba(21,101,192,.10)">💬</div>
+            <div>
+              <div class="btn-name" style="font-size:13px">일반 모드</div>
+              <div class="btn-desc">기본 대화형 처리</div>
+            </div>
+          </div>
+          <div class="mode-pill" id="mode-pill-secure" onclick="setMode('secure')">
+            <div class="mode-icon" style="background:rgba(180,92,0,.10)">🔒</div>
+            <div>
+              <div class="btn-name" style="font-size:13px">보안 입력 모드</div>
+              <div class="btn-desc">민감 정보 보호</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section id="center">
+      <div class="center-top">
+        <div class="title-wrap">
+          <h2>실행 로그</h2>
+          <p>명령 처리 결과가 여기에 표시됩니다</p>
+        </div>
+        <div class="top-actions">
+          <button class="mini-btn" onclick="clearLog()">로그 비우기</button>
+        </div>
+      </div>
+
+      <div class="log-wrap" id="log-body"></div>
+
+      <div class="inputbar">
+        <input id="text-input" type="text" placeholder="텍스트 명령 입력 — 예: 유튜브에서 고양이 영상 찾아줘" onkeydown="if(event.key==='Enter') sendTextCommand()">
+        <button class="send-btn" onclick="sendTextCommand()">↑</button>
+      </div>
+    </section>
+
+
+  </div>
+
+  <div id="footer">
+    <div class="fc"><span class="dot dot-success" style="width:7px;height:7px;box-shadow:none"></span><span class="fc-lbl">STT</span><span class="fc-val fc-ok" id="stt-status">Whisper · 정상</span></div>
+    <div class="fc"><span class="dot dot-success" style="width:7px;height:7px;box-shadow:none"></span><span class="fc-lbl">LLM</span><span class="fc-val fc-ok" id="llm-status">GPT-4o · 연결됨</span></div>
+    <div class="fc"><span class="dot dot-warn" style="width:7px;height:7px;box-shadow:none"></span><span class="fc-lbl">브라우저</span><span class="fc-val fc-warn" id="browser-status">Playwright · 대기</span></div>
+    <div class="fc"><span class="dot dot-accent" style="width:7px;height:7px;box-shadow:none"></span><span class="fc-lbl">TTS</span><span class="fc-val fc-info" id="tts-status">Edge TTS · 정상</span></div>
+  </div>
+</div>
+
+<div id="toast-wrap"></div>
+
+<div class="overlay" id="shortcut-overlay" onclick="if(event.target===this)closeShortcutOverlay()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">⌨ 단축키 안내</div>
+      <button class="close-btn" onclick="closeShortcutOverlay()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="sh-row"><span>듣기 시작 / 중지</span><span class="sh-kbd">F2</span></div>
+      <div class="sh-row"><span>현재 화면 읽기</span><span class="sh-kbd">F3</span></div>
+      <div class="sh-row"><span>최근 명령 열기</span><span class="sh-kbd">F4</span></div>
+      <div class="sh-row"><span>설정 열기</span><span class="sh-kbd">F5</span></div>
+      <div class="sh-row"><span>TTS 중지 / 모달 닫기</span><span class="sh-kbd">Esc</span></div>
+      <div class="sh-row"><span>랜덤 데모 실행</span><span class="sh-kbd">Ctrl + D</span></div>
+    </div>
+    <div class="modal-foot">
+      <button class="primary-btn" onclick="closeShortcutOverlay()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="screen-overlay" onclick="if(event.target===this)closeScreenOverlay()">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-head">
+      <div class="modal-title">👁 화면 읽기</div>
+      <button class="close-btn" onclick="closeScreenOverlay()">✕</button>
+    </div>
+    <div class="modal-body screen-box">
+      <div class="screen-hero">🖥</div>
+      <h3 style="font-size:18px;font-weight:900;color:#1565c0">현재 화면을 분석하고 있습니다</h3>
+      <p style="margin-top:8px;color:var(--muted);line-height:1.6">UI 구조와 보이는 텍스트를 결합해 사용자가 이해하기 쉬운 설명으로 바꿉니다.</p>
+      <div class="screen-progress"><div class="screen-bar"></div></div>
+      <div class="screen-result" id="screen-result"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="primary-btn" onclick="closeScreenOverlay()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="recent-overlay" onclick="if(event.target===this)closeRecentPanel()">
+  <div id="recent-panel">
+    <div class="rp-hdr">
+      <span class="rp-title">📋 최근 명령 기록</span>
+      <button class="rp-x" onclick="closeRecentPanel()">✕</button>
+    </div>
+    <div class="rp-body" id="recent-list"></div>
+    <div class="rp-footer">
+      <button class="rp-clear" onclick="clearRecentHistory()">🗑 기록 전체 삭제</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="settings-overlay" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">⚙ Voice Navigator 설정</div>
+      <button class="close-btn" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="modal-body" style="padding:0">
+      <div class="settings-layout">
+        <div class="settings-tabs">
+          <button class="tab-btn active" onclick="switchTab('stt',this)">🎙 음성 인식</button>
+          <button class="tab-btn" onclick="switchTab('tts',this)">🔊 TTS 설정</button>
+          <button class="tab-btn" onclick="switchTab('llm',this)">🧠 LLM 설정</button>
+          <button class="tab-btn" onclick="switchTab('hotkey',this)">⌨ 단축키</button>
+          <button class="tab-btn" onclick="switchTab('security',this)">🛡 보안</button>
+          <button class="tab-btn" onclick="switchTab('logset',this)">📁 로그</button>
+          <button class="tab-btn" onclick="switchTab('display',this)">🖥 화면</button>
+        </div>
+        <div>
+          <div class="tab-pane active" id="pane-stt">
+            <div class="tp-h">🎙 음성 인식 (STT) 설정</div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">STT 엔진</div><div class="fr-desc">음성→텍스트 변환 엔진</div></div>
+              <div class="fr-r"><select class="f-sel" onchange="markChanged()"><option>Whisper (로컬)</option><option>Google STT (온라인)</option><option>Azure Speech</option></select></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">인식 언어</div><div class="fr-desc">음성 인식 대상 언어</div></div>
+              <div class="fr-r"><select class="f-sel" onchange="markChanged()"><option selected>한국어 (ko-KR)</option><option>English (en-US)</option><option>日本語 (ja-JP)</option></select></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">자동 언어 감지</div><div class="fr-desc">발화 언어를 자동으로 감지</div></div>
+              <div class="fr-r"><div class="f-tog" onclick="toggleFtog(this)"></div></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">마이크 감도</div><div class="fr-desc">낮을수록 작은 소리도 인식</div></div>
+              <div class="fr-r"><input type="range" class="f-range" min="1" max="10" value="7" oninput="this.nextElementSibling.textContent=this.value;markChanged()"><span style="font-family:var(--mono);color:var(--accent);font-weight:800;min-width:14px;text-align:right">7</span></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-tts">
+            <div class="tp-h">🔊 TTS 설정</div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">TTS 엔진</div><div class="fr-desc">텍스트 음성 변환 엔진</div></div>
+              <div class="fr-r"><select class="f-sel" onchange="markChanged()"><option>Edge TTS</option><option>pyttsx3</option><option>Google TTS</option></select></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">음성</div><div class="fr-desc">출력 음성 스타일</div></div>
+              <div class="fr-r"><select class="f-sel" onchange="markChanged()"><option>ko-KR-SunHiNeural</option><option>ko-KR-InJoonNeural</option></select></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">속도</div><div class="fr-desc">느리게 ~ 빠르게</div></div>
+              <div class="fr-r"><input type="range" class="f-range" min="5" max="20" value="10" oninput="this.nextElementSibling.textContent=(this.value/10).toFixed(1)+'×';markChanged()"><span style="font-family:var(--mono);color:var(--accent);font-weight:800;min-width:34px;text-align:right">1.0×</span></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-llm">
+            <div class="tp-h">🧠 LLM 설정</div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">LLM 모드</div><div class="fr-desc">온라인 API 또는 로컬 모델</div></div>
+              <div class="fr-r"><select class="f-sel" onchange="markChanged()"><option>온라인</option><option>로컬</option></select></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">온라인 모델</div><div class="fr-desc">클라우드 기반 모델</div></div>
+              <div class="fr-r"><select class="f-sel" onchange="markChanged()"><option>GPT-4o</option><option>Claude 3.5 Sonnet</option><option>Gemini 1.5 Pro</option></select></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">API 연결 상태</div><div class="fr-desc">현재 연결된 모델 상태</div></div>
+              <div class="fr-r"><span class="f-badge fb-ok"><span class="fb-dot"></span>정상 연결</span><button class="f-act" onclick="showToast('API 연결 테스트 완료', 'success')">연결 테스트</button></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">API 키</div><div class="fr-desc">연결 테스트용 키 입력</div></div>
+              <div class="fr-r"><input type="text" class="f-txt" value="sk-xxxxxxxxxxxx" oninput="markChanged()"></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-hotkey">
+            <div class="tp-h">⌨ 단축키 설정</div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">듣기 시작 / 중지</div><div class="fr-desc">기본 단축키</div></div>
+              <div class="fr-r"><input class="f-txt" style="min-width:100px;text-align:center;font-family:var(--mono)" value="F2" oninput="markChanged()"></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">현재 화면 읽기</div><div class="fr-desc">화면 분석 단축키</div></div>
+              <div class="fr-r"><input class="f-txt" style="min-width:100px;text-align:center;font-family:var(--mono)" value="F3" oninput="markChanged()"></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">최근 명령 열기</div><div class="fr-desc">최근 명령 패널</div></div>
+              <div class="fr-r"><input class="f-txt" style="min-width:100px;text-align:center;font-family:var(--mono)" value="F4" oninput="markChanged()"></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">설정 열기</div><div class="fr-desc">설정 모달 단축키</div></div>
+              <div class="fr-r"><input class="f-txt" style="min-width:100px;text-align:center;font-family:var(--mono)" value="F5" oninput="markChanged()"></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-security">
+            <div class="tp-h">🛡 보안 설정</div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">보안 입력 모드</div><div class="fr-desc">비밀번호 입력 감지 시 자동 보호</div></div>
+              <div class="fr-r"><div class="f-tog on-a" onclick="toggleFtog(this);markChanged()"></div><span class="f-badge fb-warn"><span class="fb-dot"></span>주의</span></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">자동 잠금</div><div class="fr-desc">비활성 후 음성 인식 중지</div></div>
+              <div class="fr-r"><select class="f-sel" style="min-width:130px" onchange="markChanged()"><option>5분</option><option selected>10분</option><option>30분</option><option>안 함</option></select></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">화면 캡처 데이터 전송</div><div class="fr-desc">AI 분석용 화면 이미지 클라우드 전송</div></div>
+              <div class="fr-r"><div class="f-tog on-a" onclick="toggleFtog(this);markChanged()"></div><span class="f-badge fb-warn"><span class="fb-dot"></span>주의</span></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">금지 앱 목록</div><div class="fr-desc">이 앱 사용 중 화면 읽기 차단</div></div>
+              <div class="fr-r"><button class="f-act" onclick="showToast('금지 앱 목록 편집 (준비 중)', 'info')">목록 편집 →</button></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-logset">
+            <div class="tp-h">📁 로그 및 기록 설정</div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">명령 로그 저장</div><div class="fr-desc">음성 명령과 응답을 파일로 저장</div></div>
+              <div class="fr-r"><div class="f-tog on-g" onclick="toggleFtog(this);markChanged()"></div></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">저장 경로</div><div class="fr-desc">로그 파일 저장 폴더</div></div>
+              <div class="fr-r"><input type="text" class="f-txt" value="C:\Users\User\VoiceNav\logs" style="font-size:11px;" oninput="markChanged()"><button class="f-act" onclick="showToast('폴더 탐색기 열기 (준비 중)', 'info')">탐색</button></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">파일 형식</div><div class="fr-desc">저장 형식 선택</div></div>
+              <div class="fr-r">
+                <div class="tag-grp" id="fmt-group">
+                  <button class="f-tag on" onclick="selectTag(this,'fmt-group')">.txt</button>
+                  <button class="f-tag" onclick="selectTag(this,'fmt-group')">.json</button>
+                  <button class="f-tag" onclick="selectTag(this,'fmt-group')">.csv</button>
+                </div>
+              </div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">오류 로그 기록</div><div class="fr-desc">시스템 오류 별도 저장</div></div>
+              <div class="fr-r"><div class="f-tog on-g" onclick="toggleFtog(this);markChanged()"></div></div>
+            </div>
+            <div class="fr">
+              <div class="fr-l"><div class="fr-name">현재 로그 용량</div><div class="fr-desc">logs 폴더 크기</div></div>
+              <div class="fr-r"><span class="f-badge" style="background:rgba(21,101,192,.10);color:#1565c0">2.4 MB</span><button class="f-act bad" onclick="showToast('로그 삭제 기능은 데모입니다', 'warn')">로그 삭제</button></div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="pane-display">
+            <div class="tp-h">🖥 화면 설정</div>
+
+            <div class="fr">
+              <div class="fr-l">
+                <div class="fr-name">글자 크기</div>
+                <div class="fr-desc">UI 전체 텍스트 크기를 키웁니다</div>
+              </div>
+              <div class="fr-r">
+                <div class="f-tog" id="tog-font" onclick="toggleLargeFont(this)"></div>
+                <span id="font-size-label" style="font-size:12px;font-weight:800;color:var(--muted);min-width:48px">기본</span>
+              </div>
+            </div>
+
+            <div class="fr">
+              <div class="fr-l">
+                <div class="fr-name">고대비 모드</div>
+                <div class="fr-desc">테두리·색상 대비를 강화합니다 (저시력 사용자)</div>
+              </div>
+              <div class="fr-r">
+                <div class="f-tog" id="tog-contrast" onclick="toggleContrast(this)"></div>
+                <span id="contrast-label" style="font-size:12px;font-weight:800;color:var(--muted);min-width:48px">꺼짐</span>
+              </div>
+            </div>
+
+            <div class="fr">
+              <div class="fr-l">
+                <div class="fr-name">다크 테마</div>
+                <div class="fr-desc">야간 환경 또는 눈부심 감소에 적합합니다</div>
+              </div>
+              <div class="fr-r">
+                <div class="f-tog" id="tog-dark" onclick="toggleDark(this)"></div>
+                <span id="dark-label" style="font-size:12px;font-weight:800;color:var(--muted);min-width:48px">꺼짐</span>
+              </div>
+            </div>
+
+            <div class="fr" style="border-bottom:none;padding-bottom:0">
+              <div class="fr-l">
+                <div class="fr-name">현재 적용 상태</div>
+                <div class="fr-desc">지금 적용된 설정 요약</div>
+              </div>
+              <div class="fr-r">
+                <span id="theme-summary" class="f-badge" style="background:var(--accent-soft);color:var(--accent)">라이트 · 기본 크기</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="secondary-btn" onclick="closeSettings()">취소</button>
+      <button class="primary-btn" onclick="saveSettings()">설정 저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const state = {
+  listening:false,
+  mode:'normal',
+  micStatus:'대기',
+  activeApp:'Voice Navigator',
+  route:'Playwright 대기',
+  recentCommands:[
+    {command:'유튜브에서 고양이 영상 찾아줘', time:new Date()},
+    {command:'구글에서 파이썬 리스트 복사 검색해줘', time:new Date()},
+    {command:'네이버지도에서 인천대공원에서 서울역 가는 지하철 경로 찾아줘', time:new Date()}
+  ],
+  commandCount:0,
+  settingsChanged:false
+};
+
+const scenarios = {
+  youtube:{
+    user:'유튜브에서 고양이 영상 찾아줘',
+    system:'유튜브 검색 결과를 찾았습니다. 첫 번째 영상은 “귀여운 고양이 놀이 모음”입니다. “첫 번째 영상 재생해줘”라고 말하면 이어서 실행할 수 있습니다.',
+    app:'YouTube',
+    route:'Playwright 검색 실행',
+    last:'유튜브 검색'
+  },
+  google:{
+    user:'구글에서 파이썬 리스트 복사 검색해줘',
+    system:'구글 검색 결과 상위 3개를 찾았습니다. 첫 번째 결과는 Python 공식 문서입니다.',
+    app:'Chrome',
+    route:'Playwright 결과 수집',
+    last:'구글 검색'
+  },
+  navermap:{
+    user:'네이버지도에서 인천대공원에서 서울역 가는 지하철 경로 찾아줘',
+    system:'네이버지도에서 지하철 경로를 찾았습니다. 예상 소요시간은 약 1시간 35분이며 환승은 2회입니다.',
+    app:'Naver Map',
+    route:'Playwright 멀티스텝 실행',
+    last:'네이버지도 경로 탐색'
+  }
+};
+
+const logBody = document.getElementById('log-body');
+const recentList = document.getElementById('recent-list');
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+function now(){return new Date().toLocaleTimeString('ko-KR')}
+function tickClock(){document.getElementById('clock').textContent = new Date().toLocaleTimeString('ko-KR',{hour12:false})}
+setInterval(tickClock,1000); tickClock();
+
+function updateHeader(){
+  const dot = document.getElementById('mic-dot');
+  const wave = document.getElementById('wave');
+  dot.className = 'dot';
+  wave.classList.remove('active');
+  if(state.micStatus === '대기') dot.classList.add('dot-gray');
+  if(state.micStatus === '듣는중'){ dot.classList.add('dot-success'); wave.classList.add('active'); }
+  if(state.micStatus === '처리중') dot.classList.add('dot-accent');
+  if(state.micStatus === '보안감지') dot.classList.add('dot-danger');
+  document.getElementById('mic-status-text').textContent = state.micStatus;
+
+  const badge = document.getElementById('mode-badge');
+  badge.className = 'mode-badge';
+  document.querySelectorAll('.mode-pill').forEach(el=>el.classList.remove('active'));
+  if(state.mode==='normal'){ badge.classList.add('mode-normal'); badge.textContent='일반 모드'; document.getElementById('mode-pill-normal').classList.add('active');}
+  if(state.mode==='secure'){ badge.classList.add('mode-secure'); badge.textContent='보안 입력 모드'; document.getElementById('mode-pill-secure').classList.add('active');}
+
+  document.getElementById('active-app').textContent = state.activeApp;
+  document.getElementById('route-status').textContent = state.route;
+  const ss = document.getElementById('secure-status'); if(ss) ss.textContent = state.mode==='secure' ? '활성' : '비활성';
+  const cc = document.getElementById('cmd-count'); if(cc) cc.textContent = `${state.commandCount}개`;
+}
+
+function setEngineStatus({stt,llm,browser,tts}){
+  if(stt) document.getElementById('stt-status').textContent = stt;
+  if(llm) document.getElementById('llm-status').textContent = llm;
+  if(browser) document.getElementById('browser-status').textContent = browser;
+  if(tts) document.getElementById('tts-status').textContent = tts;
+}
+
+function addLog(type, text){
+  if(type==='user') state.commandCount += 1;
+  updateHeader();
+  const el = document.createElement('div');
+  el.className = `log-bubble ${type==='user' ? 'log-user' : type==='info' ? 'log-info' : 'log-system'}`;
+  el.innerHTML = `<div class="log-meta">${type==='user' ? '사용자' : type==='info' ? '정보' : '시스템'}</div><div class="log-text">${text}</div><div class="log-time">${now()}</div>`;
+  logBody.appendChild(el);
+  logBody.scrollTop = logBody.scrollHeight;
+}
+
+function showToast(msg, kind='info'){
+  const wrap = document.getElementById('toast-wrap');
+  const t = document.createElement('div');
+  t.className = `toast ${kind}`;
+  t.textContent = msg;
+  wrap.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(18px)'},2200);
+  setTimeout(()=>t.remove(),2500);
+}
+
+async function runScenario(key){
+  const s = scenarios[key];
+  if(!s) return;
+  addLog('user', `“${s.user}”`);
+  state.recentCommands.unshift({command:s.user, time:new Date()});
+  state.recentCommands = state.recentCommands.slice(0,12);
+  renderRecent();
+
+  state.activeApp = 'Voice Navigator';
+  state.route = '명령 분석 준비';
+  state.micStatus = '듣는중';
+  updateHeader();
+  setEngineStatus({stt:'음성 수집중', llm:'의도 분석중', browser:'대기'});
+  const la1=document.getElementById('last-action'); if(la1) la1.textContent='명령 수집';
+  await sleep(850);
+
+  state.micStatus = '처리중';
+  state.route = '상위 계획 생성';
+  updateHeader();
+  setEngineStatus({stt:'텍스트 변환 완료', llm:'작업 계획 생성중', browser:'대기'});
+  const la2=document.getElementById('last-action'); if(la2) la2.textContent='계획 생성';
+  await sleep(900);
+
+  state.activeApp = s.app;
+  state.route = s.route;
+  updateHeader();
+  setEngineStatus({llm:'대기중', browser:s.route});
+  const la3=document.getElementById('last-action'); if(la3) la3.textContent=s.last;
+  await sleep(950);
+
+  state.route = '결과 검증';
+  updateHeader();
+  setEngineStatus({browser:'결과 검증중'});
+  await sleep(750);
+
+  addLog('system', s.system);
+  state.micStatus = '대기';
+  state.route = 'Playwright 대기';
+  updateHeader();
+  setEngineStatus({stt:'Whisper · 정상', llm:'GPT-4o · 연결됨', browser:'Playwright · 대기', tts:'Edge TTS · 정상'});
+  showToast('테스트 시나리오 실행 완료', 'success');
+}
+
+async function toggleListen(){
+  const btn = document.getElementById('btn-listen');
+  if(state.listening){
+    state.listening = false;
+    state.micStatus = '대기';
+    btn.classList.remove('active');
+    updateHeader();
+    showToast('듣기를 중지했습니다', 'warn');
+    return;
+  }
+  state.listening = true;
+  btn.classList.add('active');
+  showToast('음성 명령을 기다리는 중입니다', 'info');
+  const keys = Object.keys(scenarios);
+  await runScenario(keys[Math.floor(Math.random()*keys.length)]);
+  state.listening = false;
+  btn.classList.remove('active');
+  updateHeader();
+}
+
+async function startScreenRead(){
+  document.getElementById('screen-overlay').classList.add('open');
+  addLog('user','"현재 화면 읽어줘"');
+  const la4=document.getElementById('last-action'); if(la4) la4.textContent='화면 분석';
+  await sleep(1900);
+  const result = document.getElementById('screen-result');
+  result.style.display = 'block';
+  result.innerHTML = '현재 화면은 <strong>Voice Navigator</strong>입니다. 상단에는 상태 카드 4개가 정렬되어 있고, 가운데에는 실행 로그, 좌측에는 기능 패널, 우측에는 현재 세션 카드가 배치되어 있습니다.';
+  addLog('system','현재 화면 분석이 완료되었습니다. Voice Navigator 메인 UI가 표시되어 있습니다.');
+  showToast('화면 분석이 완료되었습니다', 'success');
+}
+function closeScreenOverlay(){
+  document.getElementById('screen-overlay').classList.remove('open');
+  const result = document.getElementById('screen-result');
+  result.style.display = 'none';
+}
+function openShortcutOverlay(){document.getElementById('shortcut-overlay').classList.add('open')}
+function closeShortcutOverlay(){document.getElementById('shortcut-overlay').classList.remove('open')}
+
+function openRecentPanel(){renderRecent();document.getElementById('recent-overlay').classList.add('open')}
+function closeRecentPanel(){document.getElementById('recent-overlay').classList.remove('open')}
+function renderRecent(){
+  recentList.innerHTML = '';
+  if(state.recentCommands.length===0){
+    recentList.innerHTML = '<div class="rp-item"><div class="sample-title">저장된 명령이 없습니다.</div></div>';
+    return;
+  }
+  state.recentCommands.forEach(item=>{
+    const el = document.createElement('div');
+    el.className = 'rp-item';
+    el.innerHTML = `<div class="sample-title">${item.command}</div><div class="recent-time">${item.time.toLocaleTimeString('ko-KR')}</div>`;
+    el.onclick = ()=>{
+      document.getElementById('text-input').value = item.command;
+      closeRecentPanel();
+      showToast('최근 명령을 입력창에 복원했습니다', 'info');
+    };
+    recentList.appendChild(el);
+  });
+}
+function clearRecentHistory(){
+  state.recentCommands = [];
+  renderRecent();
+  showToast('최근 명령 기록을 비웠습니다', 'warn');
+}
+
+
+/* ── 화면 설정 ── */
+const displayState = {
+  theme: 'light',   // 'light' | 'dark' | 'contrast'
+  largeFont: false,
+  contrast: false,
+  dark: false,
+};
+
+function applyTheme(theme){
+  const html = document.documentElement;
+  html.classList.remove('theme-dark','theme-contrast');
+
+  ['dp-light','dp-dark','dp-contrast'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.classList.remove('active');
+  });
+
+  if(theme === 'dark'){
+    html.classList.add('theme-dark');
+    html.classList.remove('theme-contrast');
+    displayState.theme = 'dark';
+    displayState.dark = true;
+    displayState.contrast = false;
+    const td = document.getElementById('tog-dark');
+    if(td){ td.className='f-tog on'; }
+    const tc = document.getElementById('tog-contrast');
+    if(tc){ tc.className='f-tog'; }
+    document.getElementById('dark-label').textContent='켜짐';
+    document.getElementById('contrast-label').textContent='꺼짐';
+  } else if(theme === 'contrast'){
+    html.classList.add('theme-contrast');
+    html.classList.remove('theme-dark');
+    displayState.theme = 'contrast';
+    displayState.contrast = true;
+    displayState.dark = false;
+    const tc = document.getElementById('tog-contrast');
+    if(tc){ tc.className='f-tog on'; }
+    const td = document.getElementById('tog-dark');
+    if(td){ td.className='f-tog'; }
+    document.getElementById('contrast-label').textContent='켜짐';
+    document.getElementById('dark-label').textContent='꺼짐';
+  } else {
+    displayState.theme = 'light';
+    displayState.dark = false;
+    displayState.contrast = false;
+    const td = document.getElementById('tog-dark');
+    if(td){ td.className='f-tog'; }
+    const tc = document.getElementById('tog-contrast');
+    if(tc){ tc.className='f-tog'; }
+    document.getElementById('dark-label').textContent='꺼짐';
+    document.getElementById('contrast-label').textContent='꺼짐';
+  }
+  updateThemeSummary();
+  markChanged();
+}
+
+function toggleLargeFont(el){
+  displayState.largeFont = !displayState.largeFont;
+  document.documentElement.classList.toggle('font-large', displayState.largeFont);
+  el.className = displayState.largeFont ? 'f-tog on' : 'f-tog';
+  document.getElementById('font-size-label').textContent = displayState.largeFont ? '크게' : '기본';
+  updateThemeSummary();
+  markChanged();
+}
+
+function toggleContrast(el){
+  if(displayState.contrast){
+    applyTheme('light');
+  } else {
+    applyTheme('contrast');
+  }
+}
+
+function toggleDark(el){
+  if(displayState.dark){
+    applyTheme('light');
+  } else {
+    applyTheme('dark');
+  }
+}
+
+function updateThemeSummary(){
+  const s = document.getElementById('theme-summary');
+  if(!s) return;
+  const t = displayState.theme === 'dark' ? '다크' : displayState.theme === 'contrast' ? '고대비' : '라이트';
+  const f = displayState.largeFont ? '· 큰 글씨' : '· 기본 크기';
+  s.textContent = t + ' ' + f;
+}
+
+function openSettings(){document.getElementById('settings-overlay').classList.add('open')}
+function closeSettings(){document.getElementById('settings-overlay').classList.remove('open')}
+function saveSettings(){
+  state.settingsChanged = false;
+  closeSettings();
+  addLog('system','설정이 저장되었습니다. 최종본에서는 설정창과 메인 UI 모두 동일한 다크 블루 톤으로 정리되었습니다.');
+  showToast('설정을 저장했습니다', 'success');
+}
+function switchTab(id, el){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(`pane-${id}`).classList.add('active');
+}
+function markChanged(){state.settingsChanged = true}
+function toggleFtog(el){
+  if(el.classList.contains('on') || el.classList.contains('on-g') || el.classList.contains('on-a')){
+    el.className = 'f-tog';
+  } else {
+    el.className = 'f-tog on';
+  }
+  state.settingsChanged = true;
+}
+function selectTag(btn, groupId){
+  document.querySelectorAll(`#${groupId} .f-tag`).forEach(el=>el.classList.remove('on'));
+  btn.classList.add('on');
+  state.settingsChanged = true;
+}
+function setMode(mode){
+  state.mode = mode;
+  if(mode === 'secure'){
+    state.micStatus = '보안감지';
+    setEngineStatus({browser:'민감 정보 보호중'});
+    showToast('보안 입력 모드로 전환되었습니다', 'warn');
+  } else {
+    if(state.micStatus === '보안감지') state.micStatus = '대기';
+    setEngineStatus({browser:'Playwright · 대기'});
+  }
+  updateHeader();
+}
+function clearLog(){
+  logBody.innerHTML = '';
+  state.commandCount = 0;
+  updateHeader();
+  showToast('로그를 비웠습니다', 'warn');
+}
+function sendTextCommand(){
+  const input = document.getElementById('text-input');
+  const v = input.value.trim();
+  if(!v){showToast('명령을 입력해 주세요', 'warn');return;}
+  addLog('user', `“${v}”`);
+  state.recentCommands.unshift({command:v, time:new Date()});
+  state.recentCommands = state.recentCommands.slice(0,12);
+  renderRecent();
+  input.value = '';
+  const low = v.toLowerCase();
+  if(v.includes('유튜브') || low.includes('youtube')){runScenario('youtube');return;}
+  if(v.includes('지도') || v.includes('길찾기') || v.includes('서울역')){runScenario('navermap');return;}
+  if(v.includes('구글') || v.includes('검색')){runScenario('google');return;}
+  addLog('info','명령을 시뮬레이션했습니다. 실제 앱에서는 LLM과 자동화 엔진이 라우팅을 수행합니다.');
+  document.getElementById('last-action').textContent='텍스트 명령 시뮬레이션';
+}
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){
+    closeSettings(); closeShortcutOverlay(); closeRecentPanel(); closeScreenOverlay();
+    showToast('오버레이를 정리했습니다', 'info');
+    return;
+  }
+  if(document.activeElement === document.getElementById('text-input') && e.key !== 'Escape') return;
+  if(e.key === 'F2'){e.preventDefault();toggleListen();}
+  if(e.key === 'F3'){e.preventDefault();startScreenRead();}
+  if(e.key === 'F4'){e.preventDefault();openRecentPanel();}
+  if(e.key === 'F5'){e.preventDefault();openSettings();}
+  if(e.ctrlKey && e.key.toLowerCase() === 'd'){e.preventDefault();runRandomDemo();}
+});
+updateHeader();
+renderRecent();
+</script>
+</body>
+</html>

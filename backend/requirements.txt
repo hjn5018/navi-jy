@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+playwright
+langchain
+langchain-openai
+python-dotenv
+sqlmodel
+boto3
+google-cloud-texttospeech
+openai
+pywinauto
+uiautomation

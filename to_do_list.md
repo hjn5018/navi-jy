@@ -8,11 +8,11 @@
 - [x] 핵심 DB 스키마(ERD) 정의
 
 ## Phase 2: Environment Setup & PoC (Proof of Concept)
-- [ ] Python 백엔드(FastAPI) 프로젝트 초기화 및 가상환경 세팅
-- [ ] 프론트엔드/클라이언트 프로젝트 초기화 구축 (Flutter 또는 대안 기술 테스트)
-- [ ] OpenAI STT 연동 및 마이크 입력 테스트 스크립트 작성
+- [x] Python 백엔드(FastAPI) 프로젝트 초기화 및 가상환경 세팅
+- [x] 프론트엔드/클라이언트 프로젝트 초기화 구축 (Next.js - Light Mockup 디자인 반영)
+- [/] OpenAI STT 연동 및 마이크 입력 테스트 스크립트 작성 (스크립트 작성 완료)
 - [ ] GCP TTS 연동 및 스피커 출력 테스트
-- [ ] Playwright를 이용한 유튜브 자동 검색 파이썬 스크립트(PoC) 작성
+- [x] Playwright를 이용한 유튜브 자동 검색 파이썬 스크립트(PoC) 작성 (검증 완료)
 
 ## Phase 3: Core AI Agent Implementation
 - [ ] LangChain/기본 프롬프트를 이용한 의도 분석 인텐트 라우터 개발
