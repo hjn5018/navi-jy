@@ -29,4 +29,4 @@
 - [x] 개인정보 필터링(Data Masking) 및 보안 로직 적용 (이메일/비밀번호 마스킹 유틸리티 통합)
 - [x] 응답 지연 시간(Latency) 최적화 (Playwright 브라우저 싱글톤 패턴 적용)
 - [x] 배포 및 자동 실행 단축키 설정 가이드 작성 완료
-- [x] **통합 Standalone 배포 (.exe) 빌드 성공** (PyInstaller & Next.js Static Export 적용)
+- [x] **통합 Standalone 네이티브 앱 (.exe) 빌드 성공** (pywebview & PyInstaller & noconsole 적용)

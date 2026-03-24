@@ -2,46 +2,61 @@
 
 사용자가 아이콘 하나로 NAVI를 실행할 수 있게 만드는 과정입니다.
 
-## 1. 전체 패키징 흐름도 (Packaging Workflow)
+## 1. 전용 윈도우 앱 패키징 흐름 (Native App Workflow)
 
 ```mermaid
 graph TD
-    subgraph "1단계: 프론트엔드 빌드"
+    subgraph "1단계: 프론트엔드 정적 빌드"
     A[Next.js 소스 코드] --> B["npm run build (Static Export)"]
-    B --> C[정적 HTML/JS 파일 추출]
+    B --> C[client/out 정적 파일 생성]
     end
 
-    subgraph "2단계: 백엔드 빌드"
-    D[FastAPI 소스 코드] --> E["PyInstaller 실행"]
-    E --> F["NAVI_Backend.exe 생성 (모든 라이브러리 포함)"]
+    subgraph "2단계: 백엔드 & GUI 통합 빌드"
+    D[Python 소스 코드] --> E["pywebview (Native Window 엔진)"]
+    E --> F["PyInstaller 통합 빌드"]
+    F --> G["NAVI_App.exe (All-in-One)"]
     end
 
-    subgraph "3단계: 통합 및 인스톨러 제작"
-    C --> G["Electron / Tauri 컨테이너"]
-    F --> G
-    G --> H["NAVI_Setup.exe (최종 설치 파일)"]
+    subgraph "최종 결과"
+    G --> H["독립형 윈도우 앱 실행 (주소창 없음)"]
     end
-
-    H --> I[사용자 데스크탑 아이콘 생성]
 ```
 
-## 2. 상세 작업 절차
+## 2. 상세 상세 작업 절차 및 빌드 명령어
 
 ### 1️⃣ 프론트엔드 (Next.js)
 *   `next.config.js`에서 `output: 'export'` 설정을 추가하여 서버 없이도 브라우저에서 읽을 수 있는 HTML 파일 뭉치를 만듭니다.
-*   이 파일들은 최종 앱의 '화면' 역할을 하게 됩니다.
+*   빌드 결과물인 `client/out` 폴더를 백엔드 서버가 정적 파일로 서빙하도록 설정합니다.
 
-### 2️⃣ 백엔드 (FastAPI/Python)
-*   **PyInstaller**를 사용하여 작성한 모든 파이썬 파일과 의존 라이브러리를 하나로 묶습니다.
-*   `--onefile` 옵션을 사용하면 파일 하나만 남고, `--noconsole` 옵션을 사용하면 백그라운드에서 조용히 실행됩니다.
+### 2️⃣ 백엔드 & GUI 통합 (Python / pywebview)
+*   **pywebview** 라이브러리를 사용하여 FastAPI 서버가 실행되는 동시에 주소창이 없는 전용 윈도우 창을 생성합니다.
+*   백엔드 API는 별도의 스레드(`threading.Thread`)에서 실행하여 GUI 창과 병렬로 동작하게 합니다.
 
-### 3️⃣ 통합 패킹 (Electron 등)
-*   사용자가 아이콘을 클릭하면:
-    1.  백엔드 `.exe`가 백그라운드에서 실행됩니다.
-    2.  동시에 전용 윈도우 창이 떠서 빌드된 HTML 화면을 보여줍니다.
-    3.  두 시스템은 내부에서 **WebSocket**으로 통신하며 작동합니다.
+### 3️⃣ PyInstaller를 이용한 통합 패키징
+실제 배포용 단일 실행 파일을 만드는 명령어는 다음과 같습니다 (모든 라이브러리 및 정적 데이터 포함):
+
+```bash
+python -m PyInstaller ^
+  --onefile ^
+  --noconsole ^
+  --name NAVI_App ^
+  --add-data "client/out;client/out" ^
+  --add-data "backend;backend" ^
+  --collect-all langchain ^
+  --collect-all uvicorn ^
+  --collect-all websockets ^
+  --collect-all webview ^
+  launcher.py
+```
+
+### 🏆 주요 설정 항목 설명
+*   `--onefile`: 모든 라이브러리와 자산을 단 하나의 `.exe` 파일로 응축합니다.
+*   `--noconsole`: 실행 시 배경에 검은색 터미널 창이 나타나지 않도록 가려줍니다.
+*   `--add-data`: 프론트엔드 정적 파일(`.html`, `.js`)과 백엔드 로직 디렉토리를 실행 파일 내부 데이터 리소스로 포함합니다.
+*   `--collect-all`: `langchain`, `uvicorn` 등 동적으로 로드되는 라이브러리의 모든 의존성을 누락 없이 패킹합니다.
 
 ---
 
-## 🚀 실습: 간단한 도구(.exe) 제작 체험
-지금 바로 **백엔드 환경 진단 도구**를 실제 `.exe` 파일로 만드는 과정을 시연해 드릴 수 있습니다. (PyInstaller 이용)
+## 🚀 유지보수 주의사항
+*   **경로 관리**: 실행 파일 내부의 임시 경로(`sys._MEIPASS`)를 통해 파일을 찾도록 소스 코드 내 경로 처리가 되어 있어야 합니다.
+*   **프로세스 종료**: GUI 창이 닫힐 때 백그라운드 스레드에서 돌아가는 API 서버도 함께 안전하게 종료되도록 설계가 필요합니다.
