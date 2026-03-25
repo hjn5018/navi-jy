@@ -17,11 +17,14 @@ sd.wait()  # Wait until recording is finished
 write(filename, fs, myrecording)  # Save as WAV file 
 print("[녹음 완료]")
 
+# CPU 환경 충돌 및 Segmentation fault 방지
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
 model_size = "tiny"
 print(f"\n{model_size} 모델을 로드하는 중... (CPU 모드)")
 start_time = time.time()
-# CPU 모드로 int8 양자화 적용 (가장 가벼운 설정)
-model = WhisperModel(model_size, device="cpu", compute_type="int8")
+# CPU 모드에서 int8은 일부 환경에서 segfault를 유발하므로 default(float32)로 변경합니다.
+model = WhisperModel(model_size, device="cpu", compute_type="default")
 print(f"모델 로드 완료: {time.time() - start_time:.2f}초")
 
 print("\n음성 인식(STT) 진행 중...")
