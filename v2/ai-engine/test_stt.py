@@ -4,8 +4,11 @@ from faster_whisper import WhisperModel
 import time
 import os
 
+# HuggingFace symlink warning 제거
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+
 fs = 16000  # Sample rate
-seconds = 3  # Duration of recording
+seconds = 10  # Duration of recording
 filename = "test_audio.wav"
 
 print(f"[{seconds}초 동안 마이크로 음성을 녹음합니다. 말씀해주세요...]")
