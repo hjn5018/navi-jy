@@ -8,24 +8,24 @@ V2는 로컬 환경에 최적화된 아키텍처를 가집니다. 외부 API 연
 ```mermaid
 graph TD
     subgraph "Desktop Shell (Tauri + React)"
-        UI[네이티브 UI 창]
-        Mic[마이크 녹음 / 오디오 캡처]
+        UI["네이티브 UI 창"]
+        Mic["마이크 녹음 / 오디오 캡처"]
     end
 
     subgraph "AI Engine (Python Sidecar)"
-        IPC[Tauri IPC & stdout/stdin 통신]
-        STT[음성 인식: Faster-Whisper]
-        TTS[음성 합성: Piper TTS / Silero]
-        LM[로컬 LLM: Ollama (Phi-3 / Qwen)]
+        IPC["Tauri IPC & stdout/stdin 통신"]
+        STT["음성 인식: Faster-Whisper"]
+        TTS["음성 합성: Piper TTS / Silero"]
+        LM["로컬 LLM: Ollama (Phi-3 / Qwen)"]
         
         subgraph "Agent Framework (Core AI Logic)"
-            Router[Intent Router]
-            Dispatcher[Tool Dispatcher]
+            Router["Intent Router"]
+            Dispatcher["Tool Dispatcher"]
         end
         
         subgraph "Automation Workers"
-            WinOS[OS Controller: uiautomation]
-            WebBrowser[Web Agent: Playwright]
+            WinOS["OS Controller: uiautomation"]
+            WebBrowser["Web Agent: Playwright"]
         end
     end
 
