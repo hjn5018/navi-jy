@@ -18,6 +18,13 @@ NAVI 프로젝트는 최신 웹 기술과 강력한 AI 생태계를 결합하여
     - **Elixir (Erlang VM)**: 고도의 가용성과 액터 모델 기반 비동기 처리를 제공하지만, 학습 곡선이 높습니다.
     NAVI는 **AI 개발 생산성**과 **비동기 성능**의 균형을 위해 FastAPI를 최적으로 선택했습니다.
 
+### 🎙️ Voice & Audio Strategy
+*   **STT (Speech-to-Text)**:
+    - **Local Choice (Web Speech API)**: 브라우저 내장 엔진을 사용하여 서버 부하와 패키징 용량을 최소화했습니다. 별도 설치 없이 100% 무료로 작동합니다.
+    - **Cloud Choice (OpenAI Whisper)**: 고정밀 변환이 필요한 경우 선택적으로 API를 통해 처리합니다.
+*   **TTS (Text-to-Speech)**:
+    - **Edge-TTS**: Microsoft의 무료 신경망 음성 엔진을 사용하여 API 키 없이도 로컬에서 고품질 음성을 생성합니다.
+
 ---
 
 ## 2. 주요 패키지 및 역할 (Core Packages)

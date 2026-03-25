@@ -1,4 +1,7 @@
-# 🎙️ NAVI: Voice-Powered AI Assistant
+# 🎙️ NAVI: Voice-Powered AI Assistant (V1 - Deprecated)
+
+> ⚠️ **NOTICE**: 현재 이 레포지토리/폴더의 코드는 **NAVI V1**입니다. 
+> 로컬 AI(Local LLM/STT/TTS) 도입 및 인식률/실행력 개선을 위해 **NAVI V2**로 아키텍처가 전면 개편되었습니다. 새로운 개발 및 문서는 `v2` 폴더를 참고해 주세요.
 
 NAVI는 사용자의 음성 및 텍스트 명령을 이해하고 웹 검색, 앱 제어 및 정보 요약을 수행하는 지능형 AI 비서 서비스입니다.  
 **Next.js**의 세련된 UI와 **FastAPI(Python)**의 강력한 AI 처리 능력을 결합하여, 단일 실행 파일(.exe)로 배포 가능한 **올인원(All-in-One) 네이티브 애플리케이션**으로 제작되었습니다.

@@ -8,8 +8,15 @@ class OSAgent:
     """Specialized agent for robust Windows UI Automation and OS control."""
     
     def __init__(self):
-        # Set uiautomation common settings
-        auto.auto.TimeOut = 5
+        # PyInstaller Compatibility Fix: Use explicit uiautomation property
+        try:
+            auto.uiautomation.TimeOut = 5
+        except AttributeError:
+            # Fallback for different versions
+            try:
+                auto.auto.TimeOut = 5
+            except:
+                pass
         
     def open_app(self, app_name: str) -> str:
         """Opens a standard Windows application via subprocess."""

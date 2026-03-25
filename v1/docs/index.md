@@ -1,4 +1,7 @@
-# 📂 NAVI 문서 체계 (Documentation Directory)
+# 📂 NAVI 문서 체계 (Documentation Directory) (V1 - Deprecated)
+
+> ⚠️ **NOTICE**: 이곳의 문서들은 **NAVI V1** 기반입니다. 현재 V2로의 아키텍처 개편이 진행되어 이 문서들은 더 이상 업데이트되지 않습니다. 최신 문서는 `v2/docs`를 확인해 주세요.
+
 
 NAVI 프로젝트의 문서들을 체계적으로 관리합니다. 모든 상세 문서는 `/docs` 폴더 내에 위치합니다.
 

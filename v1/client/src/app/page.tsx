@@ -31,8 +31,13 @@ export default function Home() {
         console.log('[*] WS Message:', data);
         
         if (data.type === 'status') {
-          // Add a temporary status log
           setHistory(prev => [...prev, { role: 'SYSTEM', content: data.content, type: 'log' }]);
+        } else if (data.type === 'transcription') {
+          setHistory(prev => [...prev, { role: 'USER', content: data.content }]);
+        } else if (data.type === 'audio') {
+          // Play received audio
+          const audio = new Audio(`data:audio/mp3;base64,${data.content}`);
+          audio.play();
         } else if (data.type === 'result') {
           setLoading(false);
           const content = data.content.status === 'success' 
@@ -43,14 +48,11 @@ export default function Home() {
       };
 
       socket.onclose = () => {
-        console.log('[!] WebSocket Disconnected. Retrying in 3s...');
         setWsStatus('disconnected');
         setTimeout(connectWS, 3000);
       };
 
-      socket.onerror = (err) => {
-        console.error('[!] WS Error:', err);
-      };
+      socket.onerror = (err) => console.error('[!] WS Error:', err);
     };
 
     connectWS();
@@ -71,6 +73,45 @@ export default function Home() {
     }
   }, [history]);
 
+  const toggleMic = () => {
+    if (micActive) {
+      setMicActive(false);
+      return;
+    }
+
+    // Use Web Speech API for Free/Local STT (no weight on EXE)
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('이 브라우저는 음성 인식을 지원하지 않습니다.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'ko-KR';
+    recognition.interimResults = false;
+
+    recognition.onstart = () => setMicActive(true);
+    recognition.onend = () => setMicActive(false);
+    
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setCommand(transcript);
+      // Immediately send command
+      if (ws.current && wsStatus === 'connected') {
+        ws.current.send(JSON.stringify({ type: 'command', content: transcript, speak: true }));
+        setHistory(prev => [...prev, { role: 'USER', content: transcript }]);
+        setLoading(true);
+      }
+    };
+
+    recognition.onerror = (err: any) => {
+      console.error('[!] Speech Recognition Error:', err);
+      setMicActive(false);
+    };
+
+    recognition.start();
+  };
+
   const handleSendCommand = () => {
     if (!command.trim()) return;
     
@@ -78,10 +119,10 @@ export default function Home() {
     setHistory(prev => [...prev, newMsg]);
     
     if (ws.current && wsStatus === 'connected') {
-      ws.current.send(JSON.stringify({ type: 'command', content: command }));
+      ws.current.send(JSON.stringify({ type: 'command', content: command, speak: true }));
       setLoading(true);
     } else {
-      setHistory(prev => [...prev, { role: 'NAVI', content: '서버와 연결되어 있지 않습니다. WebSocket 상태를 확인하세요.' }]);
+      setHistory(prev => [...prev, { role: 'NAVI', content: '서버와 연결되어 있지 않습니다.' }]);
     }
     setCommand('');
   };
@@ -124,7 +165,10 @@ export default function Home() {
 
         {/* Status Mini Bar */}
         <div className={`flex gap-3 px-4 py-2.5 bg-[#f5f9ff]/85 border-b border-[var(--border)] shrink-0 overflow-x-auto no-scrollbar`}>
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[var(--border)] rounded-full shadow-sm text-[11px] font-bold shrink-0">
+          <div 
+            onClick={toggleMic}
+            className="flex items-center gap-2 px-3 py-1.5 bg-white border border-[var(--border)] rounded-full shadow-sm text-[11px] font-bold shrink-0 cursor-pointer hover:bg-gray-50 transition-colors"
+          >
             <span className={`w-2 h-2 rounded-full ${micActive ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
             <span>MIC: {micActive ? 'ON' : 'OFF'}</span>
           </div>
