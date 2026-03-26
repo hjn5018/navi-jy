@@ -581,6 +581,20 @@
         </div>
     </section>
 
+    <section id="faq">
+        <h2 class="section-title">자주 묻는 질문 (FAQ)</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Q: Playwright로 네이버 길찾기 자동화가 가능한가요?</h3>
+                <p><strong>A: 네, 완벽히 가능합니다.</strong> Playwright는 실제 브라우저 엔진을 제어하므로 네이버 지도의 동적인 UI 요소들을 정확히 탐색하고 클릭할 수 있습니다. 다만, 네이버 지도는 <code>iframe</code>을 다수 사용하므로 프레임 전환 로직이 필요하며, 봇 감지를 피하기 위해 <code>playwright-stealth</code> 같은 라이브러리 사용을 권장합니다.</p>
+            </div>
+            <div class="card">
+                <h3>Q: Windows UI Automation으로 크롬을 직접 켤 수 있나요?</h3>
+                <p><strong>A: 가능하지만 권장하지 않습니다.</strong> UIA는 이미 실행 중인 창의 요소를 제어하는 데 최적화되어 있습니다. 크롬을 단순히 '실행'하는 용도로는 Python의 <code>subprocess</code> 모듈을 사용하는 것이 훨씬 빠르고 안정적입니다. 실행 후 브라우저의 주소창이나 탭 메뉴 등 윈도우 OS 레벨의 조작이 필요할 때만 UIA를 병행하십시오.</p>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <p>&copy; 2026 NAVI Project Team. Empowering daily life with AI.</p>
     </footer>
